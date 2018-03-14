@@ -27,11 +27,11 @@ H2=-0.02                    !轨枕高出道床板高度
 H1=-0.25                    !钢轨距离轨枕表面距离
 
 !道床板
-SLAB_W=2.80          !轨道板宽度
-SLAB_H=0.275         !轨道板高度
+SLAB_W=3.10          !轨道板宽度
+SLAB_H=0.3         !轨道板高度
 SLAB_F=0                             !板缝隙
 KJJJ1=0.650                             !板缝处扣件间距
-SLAB_BBZL=0             !板边距离第一组扣件距离
+SLAB_BBZL=KJJJ/2             !板边距离第一组扣件距离
 KJQD_L=SLAB_BBZL+SLAB_F                 !板缝隙+板边
 SLAB_BBL=(SLAB_W-H)/2                   !板边宽度，H=1.5钢轨中心水平距离
 SLAB_L=KJJJ*(SLAB_KJN-1)+2*SLAB_BBZL        !轨道板长度
@@ -47,21 +47,21 @@ SLAB_N=1              !总轨道板数
 
 !底座板
 BASE_L=SLAB_L
-BASE_W=3.0
-BASE_H=0.21
+BASE_W=3.1
+BASE_H=0.25
 BASE_F=SLAB_F
 
 !限位凹槽
 AC_L=1.0
 AC_W=0.70
-AC_H=0.10
+AC_H=0.13
 AC_BD=1.25     !凹槽中心距离板端距离
 AC_N=4         !凹槽数
 AC_JJ=(SLAB_L-2*AC_BD)/(AC_N-1)     !凹槽间距
 
 
 !凹槽周围橡胶垫层
-XJDC_H=0.010
+XJDC_H=0.007
 
 HDJ=0.35                 !沥青混凝土表层弹簧长度
 EDJ=190E6           !沥青混凝土表层面刚度
@@ -125,7 +125,7 @@ R,7,5E7
 
 
 !设定隔离层单元
-GL_H=0.004
+GL_H=0.012
 !土工布
 ET,8,SOLID45
 MP,EX,8,3.32E6
@@ -226,7 +226,7 @@ CM,SLEEPER_CONF,VOLU   !命名
 
 !道床板SLAB_CON
 WPCSYS,-1
-WPOFFS,,,(SLAB_W-H)/2
+WPOFFS,-(SLAB_BBZL-SLEEPER_L/2),,(SLAB_W-H)/2
 BLC4,0,H1+H2,SLAB_L,-SLAB_H,-SLAB_W
 
 VSEL,ALL
@@ -235,7 +235,7 @@ CM,SLAB_CON_1,VOLU
 
 *DO,i,1,SLAB_KJN
   WPCSYS,-1
-  WPOFFS,(i-1)*KJJJ,H1+H2,-(H-SLEEPER_W)/2
+  WPOFFS,-(SLAB_BBZL-SLEEPER_L/2)+(i-1)*KJJJ,H1+H2,-(H-SLEEPER_W)/2
   BLC4,0,0,SLEEPER_L,-SLEEPER_H-H2,-SLEEPER_W
   VSEL,U,,,SLAB_CON_%i%
   CM,LH_%i%,VOLU
